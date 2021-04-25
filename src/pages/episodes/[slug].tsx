@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+
 import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import Image from 'next/image';
@@ -9,6 +11,7 @@ import { api } from '../../services/api';
 import { convertDurationToTimeString } from '../../utils/convertDurationToTimeString';
 
 import styles from './episode.module.scss';
+import { usePlayer } from '../../contexts/PlayerContext';
 
 interface IEpisode {
   id: string;
@@ -27,6 +30,8 @@ interface IEpisodeProps {
 }
 
 export default function Episode({ episode }: IEpisodeProps) {
+  const { play } = usePlayer();
+
   return (
     <div className={styles.episode}>
       <div className={styles.thumbnailContainer}>
@@ -41,7 +46,7 @@ export default function Episode({ episode }: IEpisodeProps) {
           src={episode.thumbnail}
           objectFit='cover'
         />
-        <button type='button'>
+        <button type='button' onClick={() => play(episode)}>
           <img src='/play.svg' alt='Tocar episódio' />
         </button>
       </div>
